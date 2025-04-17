@@ -69,6 +69,49 @@ class Tree<T>(val comparator: Comparator<T>) {
         }
     }
 
+    fun remove(value: T) {
+        remove(value, root)
+    }
+
+    private fun remove(value: T, node: Node<T>?) : Node<T>? {
+        var root = node
+        if (root == null) return root
+        if (value == root.key) {
+            if (root.isLeaf) {
+                root = null
+            } else if (root.left != null) {
+                root.key = predecessor(root)
+                root.left = remove(root.key, root.left)
+            } else {
+                root.key = successor(root)
+                root.right = remove(root.key, root.right)
+            }
+        } else if (comparator.compare(value, root.key) < 0) {
+            root.left = remove(value, root.left)
+        } else {
+            root.right = remove(value, root.right)
+        }
+        return root
+    }
+
+    private fun predecessor(node: Node<T>) : T {
+        var root = node
+        root = root.left!!
+        while (root.right != null) {
+            root = root.right!!
+        }
+        return root.key
+    }
+
+    private fun successor(node: Node<T>) : T {
+        var root = node
+        root = root.right!!
+        while (root.left != null) {
+            root = root.left!!
+        }
+        return root.key
+    }
+
     internal data class Node<T>(var key: T, var left: Node<T>? = null, var right: Node<T>? = null) {
         val isLeaf: Boolean
         get() = left == null && right == null

@@ -16,5 +16,8 @@ fun main() {
 
     tree.traverse()
 
-    println(tree.contains(Student(1,"Tom", 17)))
+//    println(tree.contains(Student(1,"Tom", 17)))
+    println("-----------------------------------")
+    tree.remove(Student(5,"Jane", 18))
+    tree.traverse()
 }
